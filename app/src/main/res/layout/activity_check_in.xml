@@ -6,9 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".CheckInActivity">
 
-    <TextView
-        android:text="Check in activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/barcode_layout"
+            android:layout_width="match_parent"
+            android:layout_height="251dp">
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/text_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scanned Bardoces:"
+            tools:layout_editor_absoluteX="31dp"
+            tools:layout_editor_absoluteY="311dp" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
