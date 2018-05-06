@@ -3,6 +3,7 @@
     package="org.frigy.frigymobile">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -22,8 +23,14 @@
         </activity>
         <activity android:name=".CheckInActivity" />
         <activity android:name=".CheckOutActivity" />
-        <activity android:name=".SearchActivity"></activity>
-    </application>
+        <activity android:name=".SearchActivity" />
 
+        <provider
+            android:name=".service.ProductDataProvider"
+            android:authorities="org.frigy.frigymobile.service.provider"
+            android:enabled="true"
+            android:exported="false"
+            android:syncable="true"></provider>
+    </application>
 
 </manifest>
