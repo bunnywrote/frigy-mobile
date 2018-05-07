@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     val manager =  supportFragmentManager;
-    lateinit var fragment : Fragment;
+    lateinit var fragment : Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
