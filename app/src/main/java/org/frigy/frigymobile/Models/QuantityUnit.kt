@@ -1,7 +1,8 @@
 package org.frigy.frigymobile.Models
 
 
-class QuantityUnit(sign: String, name: String) {
-    lateinit var sign: String
-    lateinit var name: String
+enum class QuantityUnit(sign: String, name: String) {
+    GRAM("g", "Gramm"),
+    MILLILITER("ml", "Milliliter"),
+    PIECE("pcs", "Stück")
 }

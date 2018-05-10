@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.RelativeLayout
+import kotlinx.android.synthetic.main.app_bar_main.*
+import org.frigy.frigymobile.service.AccountCreator
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -18,7 +20,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar)
+
+        AccountCreator.CreateSyncAccount(this);
 
         initialize()
 
