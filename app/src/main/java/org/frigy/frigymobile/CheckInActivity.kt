@@ -5,28 +5,18 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import me.dm7.barcodescanner.zbar.Result
-import me.dm7.barcodescanner.zbar.ZBarScannerView
-import android.os.AsyncTask
-import android.util.JsonReader
-import com.android.volley.Request
+import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import java.io.InputStreamReader
-import java.net.URL
-import javax.net.ssl.HttpsURLConnection
-import com.android.volley.AuthFailureError
-import com.android.volley.VolleyError
 import com.google.gson.Gson
-import org.frigy.frigymobile.Models.Product
+import me.dm7.barcodescanner.zbar.Result
+import me.dm7.barcodescanner.zbar.ZBarScannerView
 import org.frigy.frigymobile.Models.dto.FoodrepoProduct
 import org.json.JSONArray
 import org.json.JSONObject
+import java.net.URL
 
 
 class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {

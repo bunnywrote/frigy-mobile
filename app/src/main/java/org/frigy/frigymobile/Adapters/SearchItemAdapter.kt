@@ -7,16 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import org.frigy.frigymobile.Extensions.DateTimeExtensions.Companion.toSimpleString
 import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.R
+import java.util.*
 
 class SearchItemAdapter : BaseAdapter {
 
     private var itemsList = ArrayList<Item>()
     private var context: Context? = null
 
-    constructor(context: Context, notesList: ArrayList<Item>) : super() {
-        this.itemsList = notesList
+    constructor(context: Context, items: ArrayList<Item>) : super() {
+        this.itemsList = items
         this.context = context
     }
 
@@ -35,21 +37,21 @@ class SearchItemAdapter : BaseAdapter {
         }
 
         vh.productTitle.text = itemsList[position].product.title
-        vh.itemCreated.text = itemsList[position].created.toString()
+        vh.itemCreated.text = toSimpleString(itemsList[position].created);
 
         return view
     }
 
-    override fun getItem(p0: Int): Any {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getItem(position: Int): Any {
+        return itemsList[position]
     }
 
-    override fun getItemId(p0: Int): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
     override fun getCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return itemsList.size;
     }
 }
 
