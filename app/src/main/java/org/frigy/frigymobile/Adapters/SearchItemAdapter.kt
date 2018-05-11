@@ -53,6 +53,14 @@ class SearchItemAdapter : BaseAdapter {
     override fun getCount(): Int {
         return itemsList.size;
     }
+
+    fun replaceItems(newItems: ArrayList<Item>){
+    //    Thread(Runnable {
+            this.itemsList = newItems
+
+            notifyDataSetChanged();
+        //  })
+    }
 }
 
 private class ViewHolder(view: View?) {

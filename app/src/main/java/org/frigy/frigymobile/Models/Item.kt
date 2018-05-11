@@ -1,6 +1,5 @@
 package org.frigy.frigymobile.Models
 
-import java.time.LocalDate
 import java.util.*
 
 enum class ItemState{
@@ -17,7 +16,7 @@ class Item {
 
     lateinit var product: Product
     lateinit var created: Date
-    lateinit var removed: LocalDate
+    lateinit var removed: Date
     lateinit var fridge: Fridge
     lateinit var itemLogEntry: ItemLogEntry
 }

@@ -1,4 +1,4 @@
-package org.frigy.frigymobile
+package org.frigy.frigymobile.Activities
 
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import me.dm7.barcodescanner.zbar.Result
 import me.dm7.barcodescanner.zbar.ZBarScannerView
 import org.frigy.frigymobile.Models.dto.FoodrepoProduct
+import org.frigy.frigymobile.R
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL

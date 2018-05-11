@@ -1,4 +1,4 @@
-package org.frigy.frigymobile
+package org.frigy.frigymobile.Activities
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.app_bar_main.*
+import org.frigy.frigymobile.R
 import org.frigy.frigymobile.service.AccountCreator
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
