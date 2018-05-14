@@ -1,5 +1,6 @@
 package org.frigy.frigymobile.Activities
 
+import android.arch.persistence.room.Room
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
@@ -7,7 +8,11 @@ import android.text.TextWatcher
 import android.widget.*
 import org.frigy.frigymobile.Adapters.SearchItemAdapter
 import org.frigy.frigymobile.Models.Item
+import org.frigy.frigymobile.Models.ItemState
+import org.frigy.frigymobile.Models.Product
+import org.frigy.frigymobile.Persistence.FridgyInternalDatabase
 import org.frigy.frigymobile.R
+import java.util.*
 
 class SearchActivity : AppCompatActivity() {
 
@@ -18,6 +23,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         initList()
+
         var searchItemsAdapter = SearchItemAdapter(this, itemsList)
 
         var search_results = this?.findViewById<ListView>(R.id.search_results) as ListView
@@ -59,11 +65,26 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initList(){
-        itemsList.add(Item("Apple"))
-        itemsList.add(Item("Banana"))
-        itemsList.add(Item("Beer"))
-        itemsList.add(Item("Karotten"))
-        itemsList.add(Item("Milk"))
-        itemsList.add(Item("Joghurt"))
+//        itemsList.add(Item("Apple"))
+//        itemsList.add(Item("Banana"))
+//        itemsList.add(Item("Beer"))
+//        itemsList.add(Item("Karotten"))
+//        itemsList.add(Item("Milk"))
+//        itemsList.add(Item("Joghurt"))
+
+        val db  = Room.databaseBuilder <FridgyInternalDatabase>(applicationContext, FridgyInternalDatabase::class.java, "room-sample-db")
+                .fallbackToDestructiveMigration()
+                .build()
+    //    booksRepository = DefaultBooksRepository(db.getAuthorDao(), db.getBookDao())
+
+        db.itemDao().insert(Item(1,Date(), ItemState.GOOD, Product(1, title = "Apple")))
+        db.itemDao().insert(Item(2,Date(), ItemState.GOOD, Product(2, title = "Banana")))
+//        db.itemDao().insert(Item("Banana"));
+//        db.itemDao().insert(Item("Beer"));
+//        db.itemDao().insert(Item("Carrots"));
+//        db.itemDao().insert(Item("Milk"));
+//        db.itemDao().insert(Item("Yoghurt"));
+
+        itemsList = ArrayList(db.itemDao().getAll())
     }
 }

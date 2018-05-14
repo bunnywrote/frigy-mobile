@@ -2,9 +2,13 @@ package org.frigy.frigymobile.Persistence
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
+import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.Models.Product
 
-@Database(entities = arrayOf(Product::class), version = 1)
+@Database(entities = [(Product::class), (Item::class)], version = 1)
 abstract class FridgyInternalDatabase : RoomDatabase() {
-    abstract fun userDao(): ProductDao
+
+    abstract fun productDao(): ProductDao
+    abstract fun itemDao(): ItemDao
+
 }

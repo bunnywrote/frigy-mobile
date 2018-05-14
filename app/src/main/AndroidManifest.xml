@@ -57,6 +57,7 @@
                 android:resource="@xml/product_data_sync_adapter" />
         </service>
 
+        <activity android:name=".Activities.ProductDetailsActivity"></activity>
     </application>
 
 </manifest>

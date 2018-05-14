@@ -7,6 +7,6 @@ import org.frigy.frigymobile.Models.Product
 @Dao
 interface ProductDao {
 
-    @Query("SELECT * FROM product")
+    @Query("SELECT * FROM products")
     fun getAll(): List<Product>
 }
