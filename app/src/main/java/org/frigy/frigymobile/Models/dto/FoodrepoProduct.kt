@@ -19,11 +19,11 @@ class FoodrepoProduct {
     //lateinit var category: Category
 
     class NameTranslations {
-        lateinit var de: String
+        var de: String = ""
     }
 
     class IngredientTranslations {
-        lateinit var de: String
+        var de: String = ""
     }
 
     override fun toString(): String {

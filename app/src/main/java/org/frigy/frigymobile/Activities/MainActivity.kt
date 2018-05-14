@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.app_bar_main.*
+import org.frigy.frigymobile.Persistence.FridgyInternalDatabase
 import org.frigy.frigymobile.R
 import org.frigy.frigymobile.service.AccountCreator
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        AccountCreator.CreateSyncAccount(this);
+        //AccountCreator.CreateSyncAccount(this);
 
         initialize()
 
