@@ -65,6 +65,8 @@ class ProductRepository(context: Context) {
                     result.postValue(resultProducts)
                 },
                 Response.ErrorListener { error ->
+                    //TODO exception handling
+                    //throw Exception("could not load data from foodrepo.org: " + error)
                     Log.d(this.javaClass.name, "could not load data from foodrepo.org: " + error)
                     //resultView.addtext = "Error while fetching data from API: " + error
                 }
@@ -109,6 +111,7 @@ class ProductRepository(context: Context) {
     }*/
 
 
+    //TODO build query with json-object
     private fun productBarcodeQuery(query: String): String {
         var query: String = "{\n" +
                 "  \"_source\": {\n" +

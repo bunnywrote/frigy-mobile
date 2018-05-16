@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
+import android.widget.CompoundButton
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.AuthFailureError
@@ -38,13 +40,17 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 0)
         }
 
-
         mScannerView = ZBarScannerView(this)
         setContentView(R.layout.activity_check_in)
         val barcodeLayout: ViewGroup = findViewById(R.id.barcode_layout)
         resultView = findViewById(R.id.text_result)
 
+        val flashSwitch: Switch = findViewById(R.id.flashSwitch)
+
+        flashSwitch.setOnCheckedChangeListener({ compoundButton: CompoundButton, b: Boolean -> mScannerView.flash = b })
+
         barcodeLayout.addView(mScannerView)
+        //Hack for huawei phones
         //mScannerView.setAspectTolerance(0.5f);
 
     }
@@ -53,8 +59,6 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
         super.onResume()
         mScannerView.setResultHandler(this)
         mScannerView.setAutoFocus(true)
-        //TODO add toggle for flashlight
-        //mScannerView.flash = true
         mScannerView.startCamera()
     }
 
@@ -63,16 +67,10 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
         mScannerView.stopCamera()
     }
 
-
-    //Implementing the ResultHandler interface and overriding handleResult function
-
-
     override fun handleResult(result: Result?) {
         Toast.makeText(this, "Scan successful: " + result?.contents + " (" + result?.barcodeFormat?.name + ")", Toast.LENGTH_SHORT).show()
-        //resultView.append(result?.contents + " (" + result?.barcodeFormat?.name + ")\n")
         val products: LiveData<List<Product>> = ProductRepository(this).searchByBarcode(result?.contents.toString())
 
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         products.observe(this, (Observer<List<Product>> {
             if (products.value!!.isEmpty()) {
                 Toast.makeText(this, "No products found for barcode: " + result?.contents, Toast.LENGTH_SHORT).show()
@@ -83,12 +81,9 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
                 }
             }
         }))
+
         //TODO dont resume camera immediately
         mScannerView.resumeCameraPreview(this)
-
-        //{products -> {for (product in products){ resultView.append(product.toString())}}
-        //Camera will stop after scanning result, so we need to resume the
-        //preview in order scan more codes
     }
 
 }
