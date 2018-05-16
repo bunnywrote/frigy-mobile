@@ -3,15 +3,15 @@ package org.frigy.frigymobile.Converters
 import android.arch.persistence.room.TypeConverter
 import java.util.*
 
-class DateConverter {
+class Converters {
 
     @TypeConverter
-    fun toDate(timestamp: Long): Date? {
-        return if (timestamp == null) null else Date(timestamp)
+    fun fromTimestamp(value: Long?): Date? {
+        return if (value == null) null else Date(value)
     }
 
     @TypeConverter
-    fun toTimestamp(date: Date): Long {
-        return date.time
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
     }
 }

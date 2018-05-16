@@ -22,7 +22,7 @@ class Product() {
 
     //lateinit var quantityUnit: QuantityUnit
     lateinit var title: String
-    lateinit var ingredients: String
+    var ingredients: String? = null
 
     @Ignore
     lateinit var imageSrc: String

@@ -2,7 +2,6 @@ package org.frigy.frigymobile.Persistence
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.arch.persistence.room.Room
 import android.content.Context
 import android.os.AsyncTask
 import android.util.Log

@@ -1,6 +1,6 @@
 package org.frigy.frigymobile.Activities
 
-import android.arch.persistence.room.Room
+import android.arch.lifecycle.LiveData
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
@@ -8,20 +8,19 @@ import android.text.TextWatcher
 import android.widget.*
 import org.frigy.frigymobile.Adapters.SearchItemAdapter
 import org.frigy.frigymobile.Models.Item
-import org.frigy.frigymobile.Models.ItemState
-import org.frigy.frigymobile.Models.Product
 import org.frigy.frigymobile.Persistence.FridgyInternalDatabase
 import org.frigy.frigymobile.R
-import java.util.*
 
 class SearchActivity : AppCompatActivity() {
 
-    private var itemsList = ArrayList<Item>()
+    private lateinit var mDb : FridgyInternalDatabase
+    private lateinit var itemsList: LiveData<List<Item>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        mDb = FridgyInternalDatabase.getInstance(this)
         initList()
 
         var searchItemsAdapter = SearchItemAdapter(this, itemsList)
@@ -31,17 +30,17 @@ class SearchActivity : AppCompatActivity() {
 
         search_results.adapter = searchItemsAdapter
         search_results.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
-            Toast.makeText(this, "Show details of " + itemsList[position].product.title, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Show details of " + itemsList.value?.get(position)?.product?.title, Toast.LENGTH_SHORT).show()
         }
 
         search_text.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 //Thread(Runnable {
-                    searchItemsAdapter.replaceItems(searchItem(search_text.text.toString()))
+                  //  searchItemsAdapter.replaceItems(searchItem(search_text.text.toString()))
                 //})
 
                 runOnUiThread(java.lang.Runnable {
-                    searchItemsAdapter.replaceItems(searchItem(search_text.text.toString()))
+                    //searchItemsAdapter.replaceItems(searchItem(search_text.text.toString()))
                 })
               //  showToaster(search_text.text.toString())
             }
@@ -57,7 +56,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchItem(keyword: String): ArrayList<Item>{
-        return ArrayList(itemsList.filter { item -> item.product.title.startsWith(keyword, true) })
+        //return ArrayList(itemsList.filter { item -> item.product.title.startsWith(keyword, true) })
+        return ArrayList()
     }
 
     private fun showToaster(msg: String){
@@ -71,20 +71,27 @@ class SearchActivity : AppCompatActivity() {
 //        itemsList.add(Item("Karotten"))
 //        itemsList.add(Item("Milk"))
 //        itemsList.add(Item("Joghurt"))
+//
+//        val db  = Room.databaseBuilder <FridgyInternalDatabase>(applicationContext, FridgyInternalDatabase::class.java, "room-sample-db")
+//                .fallbackToDestructiveMigration()
+//                .build()
 
-        val db  = Room.databaseBuilder <FridgyInternalDatabase>(applicationContext, FridgyInternalDatabase::class.java, "room-sample-db")
-                .fallbackToDestructiveMigration()
-                .build()
-    //    booksRepository = DefaultBooksRepository(db.getAuthorDao(), db.getBookDao())
+//        val apple = Product()
+//        apple.title = "Apple"
+//
+//        val cola = Product()
+//        cola.title = "Cola"
+//
+//
+//        mDb.itemDao().insert(Item(1, apple, Date()))
+//        mDb.itemDao().insert(Item(2, cola, Date()))
 
-        db.itemDao().insert(Item(1,Date(), ItemState.GOOD, Product(1, title = "Apple")))
-        db.itemDao().insert(Item(2,Date(), ItemState.GOOD, Product(2, title = "Banana")))
 //        db.itemDao().insert(Item("Banana"));
 //        db.itemDao().insert(Item("Beer"));
 //        db.itemDao().insert(Item("Carrots"));
 //        db.itemDao().insert(Item("Milk"));
 //        db.itemDao().insert(Item("Yoghurt"));
 
-        itemsList = ArrayList(db.itemDao().getAll())
+        itemsList = mDb.itemDao().getAll()
     }
 }
