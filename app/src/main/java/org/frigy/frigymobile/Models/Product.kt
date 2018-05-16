@@ -20,26 +20,27 @@ class Product() {
 
     var generic: Boolean = false
 
-    //lateinit var quantityUnit: QuantityUnit
+    lateinit var quantityUnit: QuantityUnit
     lateinit var title: String
     var ingredients: String? = null
 
     @Ignore
-    lateinit var imageSrc: String
+    var imageSrc: String? = null
 
     @Ignore
-    lateinit var category: Category
+    var category: Category? = null
 
     constructor(foodrepoProduct: FoodrepoProduct) : this() {
         code = foodrepoProduct.barcode.toLong()
         quantity = foodrepoProduct.quantity
-        //quantityUnit = QuantityUnit.getBySign(foodrepoProduct.unit)
+        quantityUnit = QuantityUnit.getBySign(foodrepoProduct.unit)
         ingredients = foodrepoProduct.ingredientTranslations.de
         title = foodrepoProduct.nameTranslations.de
+        imageSrc = foodrepoProduct.images.find { image -> image.categories.contains("Front") }!!.thumb
     }
 
     override fun toString(): String {
-        return "Product(id=$id, code=$code, quantity=$quantity, generic=$generic, title='$title', ingredients='$ingredients')"
+        return "Product(id=$id, code=$code, quantity=$quantity, generic=$generic, quantityUnit=$quantityUnit, title='$title', ingredients=$ingredients, imageSrc='$imageSrc', category=$category)"
     }
 
 

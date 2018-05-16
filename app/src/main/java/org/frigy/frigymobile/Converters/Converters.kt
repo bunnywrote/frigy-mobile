@@ -1,6 +1,7 @@
 package org.frigy.frigymobile.Converters
 
 import android.arch.persistence.room.TypeConverter
+import org.frigy.frigymobile.Models.QuantityUnit
 import java.util.*
 
 class Converters {
@@ -13,5 +14,15 @@ class Converters {
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
         return date?.time
+    }
+
+    @TypeConverter
+    fun toQuantityUnit(sign: String): QuantityUnit? {
+        return QuantityUnit.getBySign(sign)
+    }
+
+    @TypeConverter
+    fun toQuantitySign(quantityUnit: QuantityUnit): String {
+        return quantityUnit.sign
     }
 }

@@ -52,11 +52,15 @@ class ProductRepository(context: Context) {
 
         val req = object : JsonObjectRequest(foodRepoProductSearchEndpoint.toString(), createJsonRequestObject(query),
                 Response.Listener { response ->
-                    val prodcuts: Array<FoodrepoProduct> = mapJsonResponseToProduct(response)
+                    val hits: JSONObject = response.getJSONObject("hits")
+                    val int = hits.getInt("total")
                     val resultProducts: MutableList<Product> = mutableListOf()
 
-                    for (product in prodcuts) {
-                        resultProducts.add(Product(product))
+                    if (int > 0) {
+                        val prodcuts: Array<FoodrepoProduct> = mapJsonResponseToProduct(hits)
+                        for (product in prodcuts) {
+                            resultProducts.add(Product(product))
+                        }
                     }
                     result.postValue(resultProducts)
                 },
@@ -78,8 +82,7 @@ class ProductRepository(context: Context) {
 
     private fun mapJsonResponseToProduct(json: JSONObject): Array<FoodrepoProduct> {
 
-        val hits: JSONObject = json.getJSONObject("hits")
-        val hitsArray: JSONArray = hits.getJSONArray("hits")
+        val hitsArray: JSONArray = json.getJSONArray("hits")
 
         var products: Array<FoodrepoProduct> = Array(hitsArray.length(), { i -> FoodrepoProduct() })
 

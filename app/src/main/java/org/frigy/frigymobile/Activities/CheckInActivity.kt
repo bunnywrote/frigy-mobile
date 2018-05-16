@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -51,6 +52,9 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
     override fun onResume() {
         super.onResume()
         mScannerView.setResultHandler(this)
+        mScannerView.setAutoFocus(true)
+        //TODO add toggle for flashlight
+        //mScannerView.flash = true
         mScannerView.startCamera()
     }
 
@@ -64,21 +68,27 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
 
 
     override fun handleResult(result: Result?) {
-        //Toast.makeText(this, "Scan successful", Toast.LENGTH_SHORT).show()
-        resultView.append(result?.contents + " (" + result?.barcodeFormat?.name + ")\n")
-        val products: LiveData<List<Product>> = ProductRepository(this).searchByBarcode("7610849679898")
+        Toast.makeText(this, "Scan successful: " + result?.contents + " (" + result?.barcodeFormat?.name + ")", Toast.LENGTH_SHORT).show()
+        //resultView.append(result?.contents + " (" + result?.barcodeFormat?.name + ")\n")
+        val products: LiveData<List<Product>> = ProductRepository(this).searchByBarcode(result?.contents.toString())
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         products.observe(this, (Observer<List<Product>> {
-            for (product in products.value!!) {
-                resultView.append(product.toString())
+            if (products.value!!.isEmpty()) {
+                Toast.makeText(this, "No products found for barcode: " + result?.contents, Toast.LENGTH_SHORT).show()
+
+            } else {
+                for (product in products.value!!) {
+                    resultView.append(product.toString())
+                }
             }
         }))
+        //TODO dont resume camera immediately
+        mScannerView.resumeCameraPreview(this)
 
         //{products -> {for (product in products){ resultView.append(product.toString())}}
         //Camera will stop after scanning result, so we need to resume the
         //preview in order scan more codes
-        mScannerView.resumeCameraPreview(this)
     }
 
 }

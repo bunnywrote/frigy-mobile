@@ -18,12 +18,22 @@ class FoodrepoProduct {
     //lateinit var imageSrc: String
     //lateinit var category: Category
 
+    lateinit var images: Array<Image>
+
     class NameTranslations {
         var de: String = ""
     }
 
     class IngredientTranslations {
         var de: String = ""
+    }
+
+    class Image {
+        var categories: Array<String> = arrayOf(String())
+        var thumb: String = ""
+        var medium: String = ""
+        var large: String = ""
+        var xlarge: String = ""
     }
 
     override fun toString(): String {
