@@ -6,6 +6,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="item_image_desc">Item Image</string>
+    <string name="item_title_desc">Item Title</string>
+    <string name="item_info_desc">Item Info</string>
+    <string name="remove_btn_desc">Item Info</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

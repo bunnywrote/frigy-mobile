@@ -45,6 +45,12 @@
             android:text="Scanned Bardoces:"
             tools:layout_editor_absoluteX="31dp"
             tools:layout_editor_absoluteY="311dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/checkin_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
