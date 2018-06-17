@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="basketItem"
+            type="org.frigy.frigymobile.Models.Item" />
+
+        <variable
+            name="itemTitle"
+            type="String" />
+
+        <variable
+            name="itemInfo"
+            type="String" />
+    </data>
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_alignParentStart="true"
     android:gravity="start">
 
-    <ImageView
+
+        <ImageView
         android:id="@+id/item_image"
         android:layout_width="60dp"
         android:layout_height="match_parent"
@@ -30,7 +48,7 @@
             android:contentDescription="@string/item_title_desc"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@string/item_title_desc"
+            android:text="@{itemTitle}"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -39,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:contentDescription="@string/item_info_desc"
-            android:text="@string/item_info_desc" />
+            android:text="@{itemInfo}" />
     </LinearLayout>
 
     <ImageButton
@@ -52,3 +70,4 @@
         android:minWidth="50dp"
         app:srcCompat="@android:drawable/ic_delete" />
 </LinearLayout>
+</layout>

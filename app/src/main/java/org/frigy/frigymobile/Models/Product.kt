@@ -43,5 +43,23 @@ class Product() {
         return "Product(id=$id, code=$code, quantity=$quantity, generic=$generic, quantityUnit=$quantityUnit, title='$title', ingredients=$ingredients, imageSrc='$imageSrc', category=$category)"
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Product
+
+        if (id != other.id) return false
+        if (code != other.code) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + code.hashCode()
+        return result
+    }
+
 
 }

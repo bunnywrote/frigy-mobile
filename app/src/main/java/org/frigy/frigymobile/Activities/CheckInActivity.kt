@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.pm.PackageManager
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
@@ -12,25 +13,22 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.Switch
-import android.widget.TextView
 import android.widget.Toast
 import me.dm7.barcodescanner.zbar.Result
 import me.dm7.barcodescanner.zbar.ZBarScannerView
 import org.frigy.frigymobile.Adapters.CheckinBasketItemAdapter
-import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.Models.Product
 import org.frigy.frigymobile.Persistence.ProductRepository
 import org.frigy.frigymobile.R
-import org.frigy.frigymobile.ViewModels.CheckinBasketModel
+import org.frigy.frigymobile.ViewModels.CheckinBasketViewModel
 
 class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
 
     private lateinit var mScannerView: ZBarScannerView
-    private lateinit var itemBasketRecycler: RecyclerView
-    private lateinit var viewAdapter: CheckinBasketItemAdapter
+    //private lateinit var itemBasketRecycler: RecyclerView
+    //private lateinit var viewAdapter: CheckinBasketItemAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
-
-    private lateinit var itemBasketModel: CheckinBasketModel
+    private lateinit var itemBasketViewModel: CheckinBasketViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +38,12 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 0)
         }
 
-        itemBasketModel = ViewModelProviders.of(this).get(CheckinBasketModel::class.java)
-        itemBasketModel.mBasketItems.observe(this, Observer { it -> viewAdapter.updateItems(it!!) })
+        //       itemBasketViewModel = ViewModelProviders.of(this).get(CheckinBasketViewModel::class.java)
+//        itemBasketViewModel.mBasketItems.observe(this, Observer { it -> viewAdapter.updateItems(it!!) })
 
         mScannerView = ZBarScannerView(this)
+
+        //CheckinActivityBinding binding =
         setContentView(R.layout.activity_check_in)
         val barcodeLayout: ViewGroup = findViewById(R.id.barcode_layout)
 
@@ -56,11 +56,10 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
         //mScannerView.setAspectTolerance(0.5f);
 
         viewManager = LinearLayoutManager(this)
-        viewAdapter = CheckinBasketItemAdapter(this)
+        //viewAdapter = CheckinBasketItemAdapter(this, itemBasketViewModel)
 
-        itemBasketRecycler = findViewById<RecyclerView>(R.id.checkin_recycler)
-        itemBasketRecycler.layoutManager = viewManager
-        itemBasketRecycler.adapter = viewAdapter
+        //itemBasketRecycler = findViewById<RecyclerView>(R.id.checkin_recycler)
+        //itemBasketRecycler.adapter = viewAdapter
 
     }
 
@@ -85,7 +84,7 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
                 Toast.makeText(this, "No products found for barcode: " + result?.contents, Toast.LENGTH_SHORT).show()
 
             } else if (products.value!!.size == 1) {
-                itemBasketModel.createItemFromProduct(products.value!!.get(0))
+                itemBasketViewModel.createItemFromProduct(products.value!!.get(0))
             } else {
 /*                for (product in products.value!!) {
                     resultView.append(product.toString())

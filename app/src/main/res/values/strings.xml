@@ -9,8 +9,9 @@
     <string name="item_image_desc">Item Image</string>
     <string name="item_title_desc">Item Title</string>
     <string name="item_info_desc">Item Info</string>
-    <string name="remove_btn_desc">Item Info</string>
+    <string name="remove_btn_desc">Remove Item</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="flashlight_label">Flashlight</string>
 </resources>

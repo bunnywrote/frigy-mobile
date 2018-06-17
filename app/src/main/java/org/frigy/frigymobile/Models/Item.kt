@@ -27,6 +27,27 @@ class Item(
         itemId = id;
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Item
+
+        if (product != other.product) return false
+        if (created != other.created) return false
+        if (itemId != other.itemId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = product.hashCode()
+        result = 31 * result + created.hashCode()
+        result = 31 * result + itemId.hashCode()
+        return result
+    }
+
+
 //
 //enum class ItemState{
 //    GOOD, BAD

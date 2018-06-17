@@ -1,56 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activities.CheckInActivity">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+
+        <import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
+
+        <import type="org.frigy.frigymobile.R" />
+
+        <variable
+            name="basketViewModel"
+            type="org.frigy.frigymobile.ViewModels.CheckinBasketViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:context=".Activities.CheckInActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <Switch
-                android:id="@+id/flashSwitch"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:text="Flashlight" />
+                android:orientation="horizontal">
+
+                <Switch
+                    android:id="@+id/flashSwitch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:text="@string/flashlight_label" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/barcode_layout"
+                android:layout_width="match_parent"
+                android:layout_height="251dp">
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/text_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scanned Bardoces:"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="311dp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/checkin_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:items="@{basketViewModel.basketItems}"
+                app:itemBinding="@{basketViewModel.basketItemBinding}" />
+            <!--app:layoutManager="@{LayoutManagers.linear()}"/>-->
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/barcode_layout"
-            android:layout_width="match_parent"
-            android:layout_height="251dp">
-
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/text_result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Scanned Bardoces:"
-            tools:layout_editor_absoluteX="31dp"
-            tools:layout_editor_absoluteY="311dp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/checkin_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>
