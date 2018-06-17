@@ -4,19 +4,19 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.activity_check_in.*
 import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.R
 import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import org.frigy.frigymobile.ViewModels.CheckinBasketViewModel
 
 
-class CheckinBasketItemAdapter(context: Context) : RecyclerView.Adapter<CheckinBasketItemAdapter.CheckinBasketItemViewHolder>() {
+class CheckinBasketItemAdapter(context: Context, private val viewModel: CheckinBasketViewModel) : RecyclerView.Adapter<CheckinBasketItemAdapter.CheckinBasketItemViewHolder>() {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
-    private var mItems: MutableList<Item> = mutableListOf()
+    private var itemCache: MutableList<Item> = mutableListOf()
 
     class CheckinBasketItemViewHolder(basketItemView: View) : RecyclerView.ViewHolder(basketItemView) {
         val itemTitle: TextView = basketItemView.findViewById(R.id.item_title)
@@ -31,28 +31,32 @@ class CheckinBasketItemAdapter(context: Context) : RecyclerView.Adapter<CheckinB
     }
 
     override fun onBindViewHolder(holder: CheckinBasketItemViewHolder, position: Int) {
-        val currentItem: Item = mItems.get(position)
+        val currentItem: Item = itemCache.get(position)
         holder.itemTitle.setText(currentItem.product.title)
         holder.itemInfo.setText(currentItem.itemId.toString() + " " + currentItem.created.toString())
         holder.removeButton.setOnClickListener({ _ ->
-            mItems.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, itemCount)
+            removeItem(position)
         })
     }
 
     fun updateItems(items: List<Item>) {
-        mItems = items.toMutableList()
+        itemCache = items.toMutableList()
         notifyDataSetChanged()
     }
 
+    fun removeItem(position: Int) {
+        viewModel.removeItem(itemCache.removeAt(position))
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, itemCount)
+    }
+
     fun addItem(item: Item) {
-        mItems.add(item)
+        itemCache.add(item)
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return mItems.size
+        return itemCache.size
     }
 
 

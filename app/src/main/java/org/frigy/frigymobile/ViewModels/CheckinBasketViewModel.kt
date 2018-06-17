@@ -8,7 +8,7 @@ import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.Models.Product
 
 
-class CheckinBasketModel(app: Application) : AndroidViewModel(app) {
+class CheckinBasketViewModel(app: Application) : AndroidViewModel(app) {
 
     val mBasketItems: MutableLiveData<MutableList<Item>> = MutableLiveData()
 
