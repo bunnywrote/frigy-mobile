@@ -1,6 +1,5 @@
 package org.frigy.frigymobile.Activities
 
-import android.arch.lifecycle.LiveData
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
@@ -10,11 +9,12 @@ import org.frigy.frigymobile.Adapters.SearchItemAdapter
 import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.Persistence.FridgyInternalDatabase
 import org.frigy.frigymobile.R
+import java.util.*
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var mDb : FridgyInternalDatabase
-    private lateinit var itemsList: LiveData<List<Item>>
+    private lateinit var itemsList: List<Item>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,34 +30,28 @@ class SearchActivity : AppCompatActivity() {
 
         search_results.adapter = searchItemsAdapter
         search_results.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
-            Toast.makeText(this, "Show details of " + itemsList.value?.get(position)?.product?.title, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Show details of " + itemsList.get(position)?.product?.title, Toast.LENGTH_SHORT).show()
         }
 
         search_text.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
-                //Thread(Runnable {
-                  //  searchItemsAdapter.replaceItems(searchItem(search_text.text.toString()))
-                //})
-
-                runOnUiThread(java.lang.Runnable {
-                    //searchItemsAdapter.replaceItems(searchItem(search_text.text.toString()))
-                })
-              //  showToaster(search_text.text.toString())
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                //showToaster("before changed")
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-              //  showToaster("on changed")
+            override fun afterTextChanged(p0: Editable?) {
+                runOnUiThread(java.lang.Runnable {
+                    searchItemsAdapter.replaceItems(searchItem(search_text.text.toString()))
+                })
             }
         })
     }
 
     private fun searchItem(keyword: String): ArrayList<Item>{
-        //return ArrayList(itemsList.filter { item -> item.product.title.startsWith(keyword, true) })
-        return ArrayList()
+        return ArrayList(itemsList.filter { item -> item.product.title.startsWith(keyword, true) })
     }
 
     private fun showToaster(msg: String){
@@ -65,33 +59,32 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initList(){
-//        itemsList.add(Item("Apple"))
-//        itemsList.add(Item("Banana"))
-//        itemsList.add(Item("Beer"))
-//        itemsList.add(Item("Karotten"))
-//        itemsList.add(Item("Milk"))
-//        itemsList.add(Item("Joghurt"))
-//
-//        val db  = Room.databaseBuilder <FridgyInternalDatabase>(applicationContext, FridgyInternalDatabase::class.java, "room-sample-db")
-//                .fallbackToDestructiveMigration()
-//                .build()
-
 //        val apple = Product()
 //        apple.title = "Apple"
+//        apple.quantityUnit = QuantityUnit.PIECE
+//        apple.quantity = 1.0
+//
+//        val ananas = Product()
+//        ananas.title = "Ananas"
+//        ananas.quantityUnit = QuantityUnit.PIECE
+//        ananas.quantity = 1.0
+//
+//        val bier = Product()
+//        bier.title = "Bier"
+//        bier.quantityUnit = QuantityUnit.PIECE
+//        bier.quantity = 1.0
 //
 //        val cola = Product()
 //        cola.title = "Cola"
+//        cola.quantityUnit = QuantityUnit.PIECE
+//        cola.quantity = 1.0
 //
 //
-//        mDb.itemDao().insert(Item(1, apple, Date()))
-//        mDb.itemDao().insert(Item(2, cola, Date()))
+//        mDb.itemDao().insert(Item(apple, Date(), 1))
+//        mDb.itemDao().insert(Item(ananas, Date(), 2))
+//        mDb.itemDao().insert(Item(bier, Date(), 3))
+//        mDb.itemDao().insert(Item(cola, Date(), 4))
 
-//        db.itemDao().insert(Item("Banana"));
-//        db.itemDao().insert(Item("Beer"));
-//        db.itemDao().insert(Item("Carrots"));
-//        db.itemDao().insert(Item("Milk"));
-//        db.itemDao().insert(Item("Yoghurt"));
-
-        itemsList = mDb.itemDao().getAll()
+        this.itemsList = mDb.itemDao().getAll()
     }
 }

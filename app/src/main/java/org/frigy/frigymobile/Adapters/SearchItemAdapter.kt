@@ -1,6 +1,5 @@
 package org.frigy.frigymobile.Adapters
 
-import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,10 +13,10 @@ import org.frigy.frigymobile.R
 
 class SearchItemAdapter : BaseAdapter {
 
-    private var itemsList: LiveData<List<Item>>
+    private var itemsList: List<Item>
     private var context: Context? = null
 
-    constructor(context: Context, items: LiveData<List<Item>>) : super() {
+    constructor(context: Context, items: List<Item>) : super() {
         this.itemsList = items
         this.context = context
     }
@@ -36,14 +35,14 @@ class SearchItemAdapter : BaseAdapter {
             vh = view.tag as ViewHolder
         }
 
-        vh.productTitle.text = itemsList.value?.get(position)?.product?.title
-        vh.itemCreated.text = toSimpleString(itemsList.value?.get(position)!!.created);
+        vh.productTitle.text = itemsList.get(position)?.product?.title
+        vh.itemCreated.text = toSimpleString(itemsList.get(position)!!.created);
 
         return view
     }
 
     override fun getItem(position: Int): Item? {
-        return itemsList.value?.get(position)
+        return itemsList.get(position)
     }
 
     override fun getItemId(position: Int): Long {
@@ -51,15 +50,12 @@ class SearchItemAdapter : BaseAdapter {
     }
 
     override fun getCount(): Int {
-        return itemsList.value!!.size;
+        return itemsList.size
     }
 
-    fun replaceItems(newItems: LiveData<List<Item>>){
-    //    Thread(Runnable {
-            this.itemsList = newItems
-
-            notifyDataSetChanged();
-        //  })
+    fun replaceItems(newItems: List<Item>){
+        this.itemsList = newItems
+        notifyDataSetChanged();
     }
 }
 
