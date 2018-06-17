@@ -31,6 +31,9 @@ class SearchActivity : AppCompatActivity() {
         search_results.adapter = searchItemsAdapter
         search_results.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
             Toast.makeText(this, "Show details of " + itemsList.get(position)?.product?.title, Toast.LENGTH_SHORT).show()
+
+            var intent = ProductDetailsActivity.newIntent(this, itemsList.get(position))
+            startActivity(intent)
         }
 
         search_text.addTextChangedListener(object: TextWatcher{
