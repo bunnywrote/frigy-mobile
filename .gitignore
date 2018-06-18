@@ -93,6 +93,7 @@ obj/
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/assertWizardSettings.xml
 
 # OS-specific files
 .DS_Store
