@@ -36,12 +36,11 @@ class Product() {
         quantityUnit = QuantityUnit.getBySign(foodrepoProduct.unit)
         ingredients = foodrepoProduct.ingredientTranslations.de
         title = foodrepoProduct.nameTranslations.de
-        imageSrc = foodrepoProduct.images.find { image -> image.categories.contains("Front") }!!.thumb
+        imageSrc = foodrepoProduct.images.find { image -> image.categories.contains("Front") }?.thumb
     }
 
     override fun toString(): String {
         return "Product(id=$id, code=$code, quantity=$quantity, generic=$generic, quantityUnit=$quantityUnit, title='$title', ingredients=$ingredients, imageSrc='$imageSrc', category=$category)"
     }
-
 
 }
