@@ -18,7 +18,7 @@ class ProductDetailsActivity : AppCompatActivity() {
 
         //private val INTENT_USER_ID = "user_id"
 
-        fun newIntent(context: Context, item: Item): Intent {
+        fun newIntent(context: Context, item: Item?): Intent {
             val intent = Intent(context, ProductDetailsActivity::class.java)
             //intent.putExtra(INTENT_USER_ID, user.id)
             return intent

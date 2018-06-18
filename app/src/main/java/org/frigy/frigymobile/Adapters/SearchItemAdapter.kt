@@ -11,9 +11,9 @@ import org.frigy.frigymobile.Extensions.DateTimeExtensions.Companion.toSimpleStr
 import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.R
 
-class SearchItemAdapter : BaseAdapter {
+class SearchItemAdapter: BaseAdapter {
 
-    private var itemsList: List<Item>
+    private var itemsList: List<Item> = listOf()
     private var context: Context? = null
 
     constructor(context: Context, items: List<Item>) : super() {
@@ -35,14 +35,14 @@ class SearchItemAdapter : BaseAdapter {
             vh = view.tag as ViewHolder
         }
 
-        vh.productTitle.text = itemsList.get(position)?.product?.title
-        vh.itemCreated.text = toSimpleString(itemsList.get(position)!!.created);
+        vh.productTitle.text = itemsList!!.get(position)?.product?.title
+        vh.itemCreated.text = toSimpleString(itemsList!!.get(position)!!.created);
 
         return view
     }
 
     override fun getItem(position: Int): Item? {
-        return itemsList.get(position)
+        return itemsList!!.get(position)
     }
 
     override fun getItemId(position: Int): Long {
@@ -50,12 +50,17 @@ class SearchItemAdapter : BaseAdapter {
     }
 
     override fun getCount(): Int {
-        return itemsList.size
+        return itemsList!!.size
     }
 
     fun replaceItems(newItems: List<Item>){
         this.itemsList = newItems
-        notifyDataSetChanged();
+        notifyDataSetChanged()
+    }
+
+    fun addItems(newItems: List<Item>){
+        this.itemsList = newItems
+        notifyDataSetChanged()
     }
 }
 
