@@ -10,6 +10,8 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.Switch
@@ -22,14 +24,7 @@ import org.frigy.frigymobile.Persistence.ProductRepository
 import org.frigy.frigymobile.R
 import org.frigy.frigymobile.ViewModels.CheckinBasketViewModel
 
-class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
-
-    private lateinit var mScannerView: ZBarScannerView
-    private lateinit var itemBasketRecycler: RecyclerView
-    private lateinit var viewAdapter: CheckinBasketItemAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
-
-    private val handler: Handler = Handler()
+class CheckInActivity : AppCompatActivity() {
 
 
     private lateinit var viewModel: CheckinBasketViewModel
@@ -43,69 +38,32 @@ class CheckInActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
         }
 
         setContentView(R.layout.activity_check_in)
-
-        mScannerView = ZBarScannerView(this)
-        val barcodeLayout: ViewGroup = findViewById(R.id.barcode_layout)
-        val flashSwitch: Switch = findViewById(R.id.flashSwitch)
-        flashSwitch.setOnCheckedChangeListener({ compoundButton: CompoundButton, b: Boolean -> mScannerView.flash = b })
-        barcodeLayout.addView(mScannerView)
-
-        viewModel = ViewModelProviders.of(this).get(CheckinBasketViewModel::class.java)
-        viewModel.mBasketItems.observe(this, Observer { it -> viewAdapter.updateItems(it!!) })
-
-        viewManager = LinearLayoutManager(this)
-        viewAdapter = CheckinBasketItemAdapter(this, viewModel)
-
-        itemBasketRecycler = findViewById(R.id.checkin_recycler)
-        itemBasketRecycler.layoutManager = viewManager
-        itemBasketRecycler.adapter = viewAdapter
     }
 
     override fun onResume() {
         super.onResume()
-        mScannerView.setResultHandler(this)
-        mScannerView.setAutoFocus(true)
-        mScannerView.startCamera()
     }
 
     override fun onPause() {
         super.onPause()
-        mScannerView.stopCamera()
     }
 
-/*    class ExampleTask(): TimerTask(){
-        override fun run() {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.process_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.proceed -> {
+            // User chose the "Settings" item, show the app settings UI...
+            true
         }
-    }*/
-
-    override fun handleResult(result: Result?) {
-        Toast.makeText(this, "Scan successful: " + result?.contents + " (" + result?.barcodeFormat?.name + ")", Toast.LENGTH_SHORT).show()
-        val products: LiveData<List<Product>> = ProductRepository(this).searchByBarcode(result?.contents.toString())
-
-        products.observe(this, (Observer<List<Product>> {
-            var success: Boolean = false
-            if (products.value!!.isEmpty()) {
-                Toast.makeText(this, "No products found for barcode: " + result?.contents, Toast.LENGTH_SHORT).show()
-            } else if (products.value!!.size == 1) {
-                viewModel.createItemFromProduct(products.value!!.get(0))
-                success = true
-            } else {
-                //TODO multiple products found
-/*                for (product in products.value!!) {
-                    resultView.append(product.toString())
-                }*/
-                success = true
-            }
-
-            if (!success) {
-                mScannerView.resumeCameraPreview(this)
-            } else {
-                handler.postDelayed({ mScannerView.resumeCameraPreview(this) }, 2000)
-            }
-
-        }))
-
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
     }
 
 }
