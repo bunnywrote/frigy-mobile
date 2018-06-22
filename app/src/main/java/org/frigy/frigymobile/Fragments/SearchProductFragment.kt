@@ -1,5 +1,6 @@
 package org.frigy.frigymobile.Fragments
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -21,6 +22,7 @@ import org.frigy.frigymobile.Persistence.FridgyInternalDatabase
 import org.frigy.frigymobile.R
 import org.frigy.frigymobile.ViewModels.ItemListViewModel
 
+
 class SearchProductFragment : Fragment() {
 
     var itemsList: List<Item> = listOf()
@@ -28,7 +30,7 @@ class SearchProductFragment : Fragment() {
     private lateinit var searchItemsAdapter: SearchItemAdapter
     private lateinit var mDb : FridgyInternalDatabase
     private var viewModel: ItemListViewModel? = null
-    private var listener: OnFragmentInteractionListener? = null
+    private lateinit var listener: OnFragmentInteractionListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +53,8 @@ class SearchProductFragment : Fragment() {
 
         search_results!!.adapter = searchItemsAdapter
         search_results!!.onItemClickListener = OnItemClickListener { adapterView, view, position, id ->
-            Toast.makeText(activity, "Show details of " + itemsList.get(position)?.product?.title, Toast.LENGTH_SHORT).show()
 
-//            var intent = ProductDetailsActivity.newIntent(this, itemsList.get(position))
-//            startActivity(intent)
+            listener.onItemSelected(itemsList.get(position))
         }
 
         viewModel = ViewModelProviders.of(this).get(ItemListViewModel::class.java)
@@ -78,43 +78,26 @@ class SearchProductFragment : Fragment() {
         })
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            listener = context
-//        } else {
-//            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-//        }
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw ClassCastException(context.toString() + " must implement OnRageComicSelected.")
+        }
     }
 
     override fun onDetach() {
         super.onDetach()
-        listener = null
+        //listener = null
     }
 
     private fun searchItem(keyword: String): ArrayList<Item>{
         return ArrayList(itemsList.filter { item -> item.product.title.startsWith(keyword, true) })
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onItemSelected(item: Item)
     }
 
     companion object {
