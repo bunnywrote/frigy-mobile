@@ -22,12 +22,12 @@
 
             <Switch
                 android:id="@+id/flashSwitch"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/lightGray"
                 android:padding="5dp"
-                android:text="Flashlight" />
+                android:text="@string/flashlight" />
         </LinearLayout>
 
         <FrameLayout
@@ -42,7 +42,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@color/lightGray"
-            android:text="Scanned Bardoces:"
+            android:text="@string/hint_scanned_items"
             tools:layout_editor_absoluteX="31dp"
             tools:layout_editor_absoluteY="311dp" />
 

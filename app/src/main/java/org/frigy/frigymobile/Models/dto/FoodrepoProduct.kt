@@ -8,6 +8,8 @@ class FoodrepoProduct {
     var barcode: String = ""
     var quantity: Double = 0.0
 
+    val UNKNOWN: String = "unknown"
+
     lateinit var unit: String
 
     @SerializedName("name_translations")
@@ -22,10 +24,16 @@ class FoodrepoProduct {
 
     class NameTranslations {
         var de: String = ""
+        var fr: String = ""
+        var en: String = ""
+        var it: String = ""
     }
 
     class IngredientTranslations {
         var de: String = ""
+        var fr: String = ""
+        var en: String = ""
+        var it: String = ""
     }
 
     class Image {
@@ -34,6 +42,29 @@ class FoodrepoProduct {
         var medium: String = ""
         var large: String = ""
         var xlarge: String = ""
+    }
+
+    fun getNameTranslation(): String {
+        var nameTranslation = checkTranslation(nameTranslations.de)
+        if (nameTranslation != UNKNOWN) return nameTranslation
+
+        nameTranslation = checkTranslation(nameTranslations.fr)
+        if (nameTranslation != UNKNOWN) return nameTranslation
+
+        nameTranslation = checkTranslation(nameTranslations.it)
+        if (nameTranslation != UNKNOWN) return nameTranslation
+
+        nameTranslation = checkTranslation(nameTranslations.en)
+        if (nameTranslation != UNKNOWN) return nameTranslation
+
+        return nameTranslation
+    }
+
+    private fun checkTranslation(translation: String): String {
+        if (translation != null && !translation.isEmpty()) {
+            return translation;
+        }
+        return UNKNOWN
     }
 
     override fun toString(): String {

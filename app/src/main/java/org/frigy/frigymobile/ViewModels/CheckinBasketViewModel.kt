@@ -25,16 +25,21 @@ class CheckinBasketViewModel(app: Application) : AndroidViewModel(app) {
         val newItem = Item(product)
         basketItems.add(newItem)
 
-        mBasketItems.postValue(basketItems)
+        mBasketItems.value = basketItems
     }
 
     fun removeItem(item: Item) {
-        var basketItems: MutableList<Item>? = mBasketItems.value;
+        val basketItems: MutableList<Item>? = mBasketItems.value;
 
         if (basketItems != null) {
             basketItems.remove(item)
         }
 
+        mBasketItems.value = basketItems
+    }
+
+    fun commit() {
+        //TODO save items in DB
     }
 
 

@@ -35,7 +35,7 @@ class Product() {
         quantity = foodrepoProduct.quantity
         quantityUnit = QuantityUnit.getBySign(foodrepoProduct.unit)
         ingredients = foodrepoProduct.ingredientTranslations.de
-        title = foodrepoProduct.nameTranslations.de
+        title = foodrepoProduct.getNameTranslation()
         imageSrc = foodrepoProduct.images.find { image -> image.categories.contains("Front") }?.thumb
     }
 

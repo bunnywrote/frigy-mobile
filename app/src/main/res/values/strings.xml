@@ -11,7 +11,14 @@
     <string name="item_info_desc">Item Info</string>
     <string name="remove_btn_desc">Item Info</string>
 
+    <string name="checkin_scan_page_title">Scan</string>
+    <string name="checkin_confirm_page_title">Confirm</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="proceed">proceed</string>
+    <string name="hint_scanned_items">Your scanned Items:</string>
+    <string name="flashlight">Flashlight</string>
+    <string name="confirm">Confirm</string>
 </resources>
