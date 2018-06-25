@@ -29,6 +29,10 @@ class CheckInScanFragment : Fragment(), ZBarScannerView.ResultHandler {
 
     private var pageTitle: String = "title"
     private var pageNumber: Int = 0
+    private var isViewLoaded: Boolean = false
+    //TODO prevent exeption Camera is being used after Camera.release() was called
+    // private var isCameraActive: Boolean = false
+
 
     private lateinit var mScannerView: ZBarScannerView
     private lateinit var itemRecycler: RecyclerView
@@ -42,7 +46,6 @@ class CheckInScanFragment : Fragment(), ZBarScannerView.ResultHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             pageTitle = it.getString(PAGE_TITLE)
             pageNumber = it.getInt(PAGE_NUMBER)
@@ -73,19 +76,48 @@ class CheckInScanFragment : Fragment(), ZBarScannerView.ResultHandler {
         itemRecycler = view.findViewById(R.id.checkin_recycler)
         itemRecycler.layoutManager = viewManager
         itemRecycler.adapter = viewAdapter
+        isViewLoaded = true;
     }
 
 
     override fun onResume() {
         super.onResume()
+        startCamera()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopCamera()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isViewLoaded = false;
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isViewLoaded) {
+            if (isVisibleToUser) {
+                startCamera()
+            } else {
+                stopCamera()
+            }
+        }
+    }
+
+    private fun startCamera() {
         mScannerView.setResultHandler(this)
         mScannerView.setAutoFocus(true)
         mScannerView.startCamera()
     }
 
-    override fun onPause() {
-        super.onPause()
+    private fun stopCamera() {
         mScannerView.stopCamera()
+    }
+
+    private fun resumeCameraPreview() {
+        mScannerView.resumeCameraPreview(this)
     }
 
     override fun handleResult(result: Result?) {
@@ -108,9 +140,9 @@ class CheckInScanFragment : Fragment(), ZBarScannerView.ResultHandler {
             }
 
             if (!success) {
-                mScannerView.resumeCameraPreview(this)
+                resumeCameraPreview()
             } else {
-                timedHandler.postDelayed({ mScannerView.resumeCameraPreview(this) }, 2000)
+                timedHandler.postDelayed({ resumeCameraPreview() }, 2000)
             }
 
         }))
