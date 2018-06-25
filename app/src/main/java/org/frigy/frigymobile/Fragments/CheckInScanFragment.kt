@@ -150,15 +150,6 @@ class CheckInScanFragment : Fragment(), ZBarScannerView.ResultHandler {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param pageTitle Parameter 1.
-         * @param pageNumber Parameter 2.
-         * @return A new instance of fragment CheckInConfirmFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(pageTitle: String, pageNumber: Int) =
                 CheckInScanFragment().apply {

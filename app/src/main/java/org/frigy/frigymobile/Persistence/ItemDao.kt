@@ -12,6 +12,9 @@ interface ItemDao {
     @Insert
     fun insert(item: Item)
 
+    @Insert
+    fun insertAll(item: List<Item>)
+
     @Query("SELECT * FROM items")
     fun getAll(): LiveData<List<Item>>
 

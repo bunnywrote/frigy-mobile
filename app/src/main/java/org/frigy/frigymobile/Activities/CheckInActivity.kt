@@ -49,12 +49,9 @@ class CheckInActivity : AppCompatActivity() {
             if (pager.currentItem < (pager.adapter.count - 1)) {
                 pager.currentItem = (pager.currentItem + 1)
             }
-            // User chose the "Settings" item, show the app settings UI...
             true
         }
         else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
     }
