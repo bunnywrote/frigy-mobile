@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import org.frigy.frigymobile.Fragments.ProductDetailsFragment
 import org.frigy.frigymobile.Fragments.SearchProductFragment
 import org.frigy.frigymobile.Models.Item
@@ -13,10 +12,10 @@ import org.frigy.frigymobile.R
 class SearchActivity : AppCompatActivity(), SearchProductFragment.OnFragmentInteractionListener {
 
     override fun onItemSelected(item: Item) {
-        Toast.makeText(this, "Show details of " + item?.product?.title, Toast.LENGTH_SHORT).show()
+     //   Toast.makeText(this, "Show details of " + item?.product?.title, Toast.LENGTH_SHORT).show()
 
         supportFragmentManager.inTransaction {
-            replace(R.id.containerLayout, ProductDetailsFragment.newInstance(item.itemId))
+            replace(R.id.containerLayout, ProductDetailsFragment.newInstance())
         }
     }
 

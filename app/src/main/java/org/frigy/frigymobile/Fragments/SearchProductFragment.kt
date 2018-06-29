@@ -1,10 +1,8 @@
 package org.frigy.frigymobile.Fragments
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
@@ -15,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import org.frigy.frigymobile.Adapters.SearchItemAdapter
 import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.Persistence.FridgyInternalDatabase
@@ -54,10 +51,14 @@ class SearchProductFragment : Fragment() {
         search_results!!.adapter = searchItemsAdapter
         search_results!!.onItemClickListener = OnItemClickListener { adapterView, view, position, id ->
 
-            listener.onItemSelected(itemsList.get(position))
+            var selectedItem = itemsList.get(position)
+
+            listener.onItemSelected(selectedItem)
+
+            viewModel!!.setCurrentItem(selectedItem)
         }
 
-        viewModel = ViewModelProviders.of(this).get(ItemListViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity).get(ItemListViewModel::class.java)
         viewModel!!.getListItems().observe(this, Observer { items ->
             this.itemsList = items!!
             searchItemsAdapter.addItems(this.itemsList)
@@ -101,15 +102,7 @@ class SearchProductFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchProductFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
         fun newInstance() =
                 SearchProductFragment().apply {

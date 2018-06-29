@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -13,14 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.CompoundButton
-import android.widget.Switch
-import kotlinx.android.synthetic.main.fragment_checkin_confirm.*
-import me.dm7.barcodescanner.zbar.ZBarScannerView
-import org.frigy.frigymobile.Activities.CheckInActivity
 import org.frigy.frigymobile.Activities.MainActivity
 import org.frigy.frigymobile.Adapters.CheckinBasketItemAdapter
-
 import org.frigy.frigymobile.R
 import org.frigy.frigymobile.ViewModels.CheckinBasketViewModel
 

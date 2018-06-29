@@ -4,46 +4,26 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.app_bar_main.*
 import org.frigy.frigymobile.R
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    val manager =  supportFragmentManager;
-    lateinit var fragment : Fragment
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        //AccountCreator.CreateSyncAccount(this);
-
         initialize()
-
-//        val transaction = manager.beginTransaction();
-//        val fragment = MainFragment();
-//        transaction.replace(R.id.fragment_holder, fragment);
-//        transaction.addToBackStack(null);
-//        transaction.commit()
-
-
-//        var testBtn = findViewById<TextView>(R.id.testBtn);
-//        testBtn.setOnClickListener { view ->
-//            searchProduct()
-//        }
-
-//        val toggle = ActionBarDrawerToggle(
-//                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-//        drawer_layout.addDrawerListener(toggle)
-//        toggle.syncState()
-//
-//        nav_view.setNavigationItemSelectedListener(this)
     }
 
     override fun onBackPressed() {
@@ -128,13 +108,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val intent = Intent(this, CheckOutActivity::class.java)
         startActivityForResult(intent, Context.CONTEXT_INCLUDE_CODE)
     }
-
-//        var fragmentHolder = findViewById<FrameLayout>(R.id.fragment_holder);
-//        fragmentHolder.visibility = View.VISIBLE
-//
-//        val transaction = manager.beginTransaction();
-//        val fragment = SearchProductFragment();
-//        transaction.replace(R.id.fragment_holder, fragment);
-//        transaction.addToBackStack(null);
-//        transaction.commit()
 }

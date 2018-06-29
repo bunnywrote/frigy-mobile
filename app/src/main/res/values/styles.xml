@@ -15,18 +15,24 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.MainMenuButton">
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:layout_margin">5dp</item>
         <item name="android:background">@drawable/main_button_border</item>
     </style>
 
+    <style name="AppTheme.MainMenuButton.LogoText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
     <style name="AppTheme.MainMenuButton.Title">
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="AppTheme.MainMenuButton.Title.Disabled">
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#c1c1c1</item>
     </style>

@@ -2,7 +2,6 @@ package org.frigy.frigymobile.ViewModels
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.Models.Product
