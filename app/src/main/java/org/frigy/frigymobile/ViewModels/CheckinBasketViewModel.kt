@@ -6,36 +6,45 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import org.frigy.frigymobile.Models.Item
 import org.frigy.frigymobile.Models.Product
+import org.frigy.frigymobile.Persistence.ItemRepository
 
 
 class CheckinBasketViewModel(app: Application) : AndroidViewModel(app) {
 
     val mBasketItems: MutableLiveData<MutableList<Item>> = MutableLiveData()
 
-    private var mCurrentItem: Item? = null;
+    private val itemRepository = ItemRepository(getApplication())
+
+    //private var mCurrentItem: Item? = null;
+
+    init {
+        mBasketItems.value = mutableListOf();
+    }
 
     fun createItemFromProduct(product: Product) {
 
-        var basketItems: MutableList<Item>? = mBasketItems.value;
-
-        if (basketItems == null) {
-            basketItems = mutableListOf()
-        }
+        val basketItems: MutableList<Item>? = mBasketItems.value;
 
         val newItem = Item(product)
-        basketItems.add(newItem)
+        basketItems!!.add(newItem)
 
-        mBasketItems.postValue(basketItems)
+        mBasketItems.value = basketItems
     }
 
     fun removeItem(item: Item) {
-        var basketItems: MutableList<Item>? = mBasketItems.value;
+        val basketItems: MutableList<Item>? = mBasketItems.value;
 
-        if (basketItems != null) {
+        if (!basketItems!!.isEmpty()) {
             basketItems.remove(item)
         }
 
+        mBasketItems.value = basketItems
     }
 
-
+    fun commit() {
+        if (!mBasketItems.value!!.isEmpty()) {
+            itemRepository.insertAll(mBasketItems.value!!.toList())
+            mBasketItems.value = mutableListOf()
+        }
+    }
 }

@@ -11,12 +11,23 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/scan_fragment"
-            android:name="org.frigy.frigymobile.Fragments.CheckInScanFragment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/checkin_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/checkin_pager_strip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:foregroundGravity="top"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp">
+
+            </android.support.v4.view.PagerTabStrip>
+
+        </android.support.v4.view.ViewPager>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

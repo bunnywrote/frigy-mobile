@@ -10,8 +10,14 @@ import org.frigy.frigymobile.Models.Item
 interface ItemDao {
 
     @Insert
-    fun insert(repo: Item)
+    fun insert(item: Item)
+
+    @Insert
+    fun insertAll(item: List<Item>)
 
     @Query("SELECT * FROM items")
     fun getAll(): LiveData<List<Item>>
+
+    @Query("SELECT * FROM items WHERE items.itemId = :itemId")
+    fun getById(itemId: Long): LiveData<Item>
 }

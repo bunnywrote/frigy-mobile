@@ -1,51 +1,41 @@
 package org.frigy.frigymobile.Activities
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
-import android.support.v4.app.ActivityCompat
+import android.support.v4.app.*
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
-import android.widget.CompoundButton
-import android.widget.Switch
-import android.widget.Toast
-import me.dm7.barcodescanner.zbar.Result
-import me.dm7.barcodescanner.zbar.ZBarScannerView
-import org.frigy.frigymobile.Adapters.CheckinBasketItemAdapter
-import org.frigy.frigymobile.Models.Product
-import org.frigy.frigymobile.Persistence.ProductRepository
+import org.frigy.frigymobile.Fragments.CheckInConfirmFragment
+import org.frigy.frigymobile.Fragments.CheckInScanFragment
 import org.frigy.frigymobile.R
-import org.frigy.frigymobile.ViewModels.CheckinBasketViewModel
 
 class CheckInActivity : AppCompatActivity() {
 
-
-    private lateinit var viewModel: CheckinBasketViewModel
+    private lateinit var pager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //TODO to Main Activity
+        //TODO move all check permissions to Main Activity
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 0)
         }
 
         setContentView(R.layout.activity_check_in)
+
+        pager = findViewById(R.id.checkin_pager)
+        val pagerAdapter: CheckinPagerAdapter = CheckinPagerAdapter(supportFragmentManager)
+        pager.adapter = pagerAdapter
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
+    override fun onBackPressed() {
+        if (pager.currentItem == 0) {
+            super.onBackPressed()
+        } else {
+            pager.currentItem = (pager.currentItem - 1)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -56,14 +46,37 @@ class CheckInActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.proceed -> {
-            // User chose the "Settings" item, show the app settings UI...
+            if (pager.currentItem < (pager.adapter.count - 1)) {
+                pager.currentItem = (pager.currentItem + 1)
+            }
             true
         }
         else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
     }
 
+    class CheckinPagerAdapter(private val manager: FragmentManager) : FragmentPagerAdapter(manager) {
+
+        //TODO add translations
+        val pageMapping: Array<String> = arrayOf("Scan", "Confirm")
+
+        override fun getItem(position: Int): Fragment? {
+
+            when (position) {
+                0 -> return CheckInScanFragment.newInstance(pageMapping[position], position)
+                1 -> return CheckInConfirmFragment.newInstance(pageMapping[position], position)
+            }
+            return null
+        }
+
+        override fun getCount(): Int {
+            return pageMapping.size
+        }
+
+        override fun getPageTitle(position: Int): CharSequence {
+            return pageMapping[position]
+        }
+
+    }
 }

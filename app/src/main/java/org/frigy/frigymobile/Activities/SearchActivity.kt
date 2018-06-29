@@ -1,71 +1,40 @@
 package org.frigy.frigymobile.Activities
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.*
-import org.frigy.frigymobile.Adapters.SearchItemAdapter
+import android.widget.Toast
+import org.frigy.frigymobile.Fragments.ProductDetailsFragment
+import org.frigy.frigymobile.Fragments.SearchProductFragment
 import org.frigy.frigymobile.Models.Item
-import org.frigy.frigymobile.Persistence.FridgyInternalDatabase
 import org.frigy.frigymobile.R
-import org.frigy.frigymobile.ViewModels.ItemListViewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), SearchProductFragment.OnFragmentInteractionListener {
 
-    private lateinit var mDb : FridgyInternalDatabase
-    private var viewModel: ItemListViewModel? = null
+    override fun onItemSelected(item: Item) {
+        Toast.makeText(this, "Show details of " + item?.product?.title, Toast.LENGTH_SHORT).show()
 
-    var itemsList: List<Item> = listOf()
+        supportFragmentManager.inTransaction {
+            replace(R.id.containerLayout, ProductDetailsFragment.newInstance(item.itemId))
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        mDb = FridgyInternalDatabase.getInstance(this)
+        initList()
 
-        var searchItemsAdapter = SearchItemAdapter(this, arrayListOf())
-
-        var search_results = this?.findViewById<ListView>(R.id.search_results) as ListView
-        var search_text = this?.findViewById<EditText>(R.id.search_text) as TextView
-
-        search_results.adapter = searchItemsAdapter
-        search_results.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
-            Toast.makeText(this, "Show details of " + itemsList.get(position)?.product?.title, Toast.LENGTH_SHORT).show()
-
-            var intent = ProductDetailsActivity.newIntent(this, itemsList.get(position))
-            startActivity(intent)
+        supportFragmentManager.inTransaction {
+            add(R.id.containerLayout, SearchProductFragment.newInstance())
         }
-
-        viewModel = ViewModelProviders.of(this).get(ItemListViewModel::class.java)
-        viewModel!!.getListItems().observe(this, Observer { items ->
-            this.itemsList = items!!
-            searchItemsAdapter.addItems(this.itemsList)
-        })
-
-        search_text.addTextChangedListener(object: TextWatcher{
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                runOnUiThread(java.lang.Runnable {
-                    searchItemsAdapter.replaceItems(searchItem(search_text.text.toString()))
-                })
-            }
-        })
     }
 
-    private fun searchItem(keyword: String): ArrayList<Item>{
-        return ArrayList(itemsList.filter { item -> item.product.title.startsWith(keyword, true) })
-    }
-
-    private fun showToaster(msg: String){
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
+        val fragmentTransaction = beginTransaction()
+        fragmentTransaction.func()
+        fragmentTransaction.commit()
     }
 
     private fun initList(){
@@ -88,6 +57,8 @@ class SearchActivity : AppCompatActivity() {
 //        cola.title = "Cola"
 //        cola.quantityUnit = QuantityUnit.PIECE
 //        cola.quantity = 1.0
+//
+//        var mDb = FridgyInternalDatabase.getInstance(this)
 //
 //
 //        mDb.itemDao().insert(Item(apple, Date(), 1))

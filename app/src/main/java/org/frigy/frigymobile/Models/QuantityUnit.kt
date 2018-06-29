@@ -14,7 +14,7 @@ enum class QuantityUnit(sign: String, displayName: String) {
 
     companion object {
         fun getBySign(sign: String): QuantityUnit {
-            return QuantityUnit.values().find { it.sign == (sign) }!!
+            return QuantityUnit.values().find { it.sign == (sign.toLowerCase()) }!!
         }
     }
 

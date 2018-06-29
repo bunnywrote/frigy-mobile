@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
-import android.widget.FrameLayout
 import android.widget.Switch
 import android.widget.Toast
 import me.dm7.barcodescanner.zbar.Result
@@ -23,19 +22,35 @@ import org.frigy.frigymobile.Persistence.ProductRepository
 import org.frigy.frigymobile.R
 import org.frigy.frigymobile.ViewModels.CheckinBasketViewModel
 
+private const val PAGE_TITLE: String = "pageTitle"
+private const val PAGE_NUMBER: String = "pageNumber"
 
 class CheckInScanFragment : Fragment(), ZBarScannerView.ResultHandler {
+
+    private var pageTitle: String = "title"
+    private var pageNumber: Int = 0
+    private var isViewLoaded: Boolean = false
+    //TODO prevent exeption Camera is being used after Camera.release() was called
+    // private var isCameraActive: Boolean = false
+
 
     private lateinit var mScannerView: ZBarScannerView
     private lateinit var itemRecycler: RecyclerView
     private lateinit var viewAdapter: CheckinBasketItemAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewModel: CheckinBasketViewModel
+
 
     private val timedHandler: Handler = Handler()
-    private lateinit var viewModel: CheckinBasketViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        arguments?.let {
+            pageTitle = it.getString(PAGE_TITLE)
+            pageNumber = it.getInt(PAGE_NUMBER)
+        }
+
         viewModel = ViewModelProviders.of(activity).get(CheckinBasketViewModel::class.java)
         viewModel.mBasketItems.observe(this, Observer { it -> viewAdapter.updateItems(it!!) })
         viewManager = LinearLayoutManager(activity)
@@ -61,19 +76,48 @@ class CheckInScanFragment : Fragment(), ZBarScannerView.ResultHandler {
         itemRecycler = view.findViewById(R.id.checkin_recycler)
         itemRecycler.layoutManager = viewManager
         itemRecycler.adapter = viewAdapter
+        isViewLoaded = true;
     }
 
 
     override fun onResume() {
         super.onResume()
+        startCamera()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopCamera()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isViewLoaded = false;
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isViewLoaded) {
+            if (isVisibleToUser) {
+                startCamera()
+            } else {
+                stopCamera()
+            }
+        }
+    }
+
+    private fun startCamera() {
         mScannerView.setResultHandler(this)
         mScannerView.setAutoFocus(true)
         mScannerView.startCamera()
     }
 
-    override fun onPause() {
-        super.onPause()
+    private fun stopCamera() {
         mScannerView.stopCamera()
+    }
+
+    private fun resumeCameraPreview() {
+        mScannerView.resumeCameraPreview(this)
     }
 
     override fun handleResult(result: Result?) {
@@ -96,13 +140,24 @@ class CheckInScanFragment : Fragment(), ZBarScannerView.ResultHandler {
             }
 
             if (!success) {
-                mScannerView.resumeCameraPreview(this)
+                resumeCameraPreview()
             } else {
-                timedHandler.postDelayed({ mScannerView.resumeCameraPreview(this) }, 2000)
+                timedHandler.postDelayed({ resumeCameraPreview() }, 2000)
             }
 
         }))
 
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(pageTitle: String, pageNumber: Int) =
+                CheckInScanFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(PAGE_TITLE, pageTitle)
+                        putInt(PAGE_NUMBER, pageNumber)
+                    }
+                }
     }
 
 }
