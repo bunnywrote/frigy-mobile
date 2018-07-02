@@ -32,8 +32,4 @@ class ItemListViewModel(application: Application) : AndroidViewModel(application
     fun getItem(itemId: Long): LiveData<Item>{
         return appDb.itemDao().getById(itemId)
     }
-
-//    fun addContact(contact: Contact) {
-//        addAsynTask(appDb).execute(contact)
-//    }
 }

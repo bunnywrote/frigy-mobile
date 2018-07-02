@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.CheckInActivity" />
-        <activity android:name=".Activities.CheckOutActivity" />
+        <activity   android:name=".Activities.CheckOutActivity"
+                    android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Activities.SearchActivity" />
 
         <provider
