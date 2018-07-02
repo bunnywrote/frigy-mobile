@@ -38,6 +38,7 @@ class CheckOutBasketItemAdapter: BaseAdapter {
         }
 
         val item = itemsList!!.get(position)
+
         vh.productTitle.text = item?.product?.title
         vh.itemCreated.text = DateTimeExtensions.toSimpleString(itemsList!!.get(position)!!.created)
         vh.itemSelected.isChecked = item?.isSelected

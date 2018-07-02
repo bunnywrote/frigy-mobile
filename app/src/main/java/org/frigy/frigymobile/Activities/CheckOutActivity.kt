@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import android.widget.TextView
 import kotlinx.android.synthetic.main.app_bar_main.*
+import org.frigy.frigymobile.Fragments.CheckOutConfirmFragment
 import org.frigy.frigymobile.Fragments.CheckOutFragment
 import org.frigy.frigymobile.R
 
@@ -25,8 +26,13 @@ class CheckOutActivity : AppCompatActivity() {
             add(R.id.containerLayout, CheckOutFragment.newInstance())
         }
 
-        val confirmBtn = findViewById<TextView>(R.id.confirmBtn);
-        //confirmBtn.setOnClickListener()
+        val confirmBtn = findViewById<TextView>(R.id.confirmBtn) as TextView
+
+        confirmBtn.setOnClickListener{view ->
+            supportFragmentManager.inTransaction {
+                replace(R.id.containerLayout, CheckOutConfirmFragment.newInstance())
+            }
+        }
 
     }
 

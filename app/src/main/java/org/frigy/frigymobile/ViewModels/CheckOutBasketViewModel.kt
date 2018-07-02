@@ -17,6 +17,10 @@ class CheckOutBasketViewModel(app: Application) : AndroidViewModel(app) {
         mBasketItems.value = mutableListOf();
     }
 
+    fun getBasketItems(): MutableLiveData<MutableList<Item>>{
+        return mBasketItems
+    }
+
     fun getAll():LiveData<List<Item>>{
         return itemRepository.getListItems()
     }
