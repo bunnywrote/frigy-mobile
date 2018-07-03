@@ -69,7 +69,7 @@ class CheckOutBasketItemAdapter: BaseAdapter {
     }
 }
 
-private class CheckOutItemViewHolder(view: View?) {
+class CheckOutItemViewHolder(view: View?) {
     val productTitle: TextView
     val itemCreated: TextView
     val itemSelected: CheckBox

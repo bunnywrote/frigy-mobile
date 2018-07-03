@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
+                    android:textColor="#FFEE58"
                     android:text="@string/motto" />
             </RelativeLayout>
 
@@ -58,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:text="Search product" />
+                    android:text="Search" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -83,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:text="Product check in" />
+                    android:text="Check in" />
             </RelativeLayout>
 
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -99,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:text="Product check out" />
+                    android:text="Check out" />
             </RelativeLayout>
 
         </LinearLayout>

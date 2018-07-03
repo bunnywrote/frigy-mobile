@@ -1,5 +1,7 @@
 package org.frigy.frigymobile.Activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
@@ -11,7 +13,14 @@ import org.frigy.frigymobile.Fragments.CheckOutConfirmFragment
 import org.frigy.frigymobile.Fragments.CheckOutFragment
 import org.frigy.frigymobile.R
 
+enum class CheckoutState{
+    ConfirmSelected,
+    ConfirmPicked
+}
+
 class CheckOutActivity : AppCompatActivity() {
+
+    private var checkoutState: CheckoutState = CheckoutState.ConfirmSelected
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +38,18 @@ class CheckOutActivity : AppCompatActivity() {
         val confirmBtn = findViewById<TextView>(R.id.confirmBtn) as TextView
 
         confirmBtn.setOnClickListener{view ->
-            supportFragmentManager.inTransaction {
-                replace(R.id.containerLayout, CheckOutConfirmFragment.newInstance())
+
+            if(checkoutState == CheckoutState.ConfirmSelected){
+                checkoutState = CheckoutState.ConfirmPicked
+
+                supportFragmentManager.inTransaction {
+                    replace(R.id.containerLayout, CheckOutConfirmFragment.newInstance())
+                }
+            }else{
+                val intent = Intent(this, MainActivity::class.java)
+                startActivityForResult(intent, Context.CONTEXT_INCLUDE_CODE)
             }
         }
-
     }
 
     inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
